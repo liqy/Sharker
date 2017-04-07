@@ -1,29 +1,22 @@
 package com.sharker.models;
 
-import com.sharker.network.SharkerResponseParser;
-
-import org.xutils.http.annotation.HttpResponse;
+import java.util.List;
 
 /**
  * 1. 类的用途
  * 2. @author：liqingyi
- * 3. @date：2017/4/7 09:55
+ * 3. @date：2017/4/7 15:00
  */
 
-public class ResponseData<T> {
-
+public class ResponseListData<T> {
     public int ret;
 
     public String msg;
 
-    public T data;
+    public List<T> data;
 
     public boolean isResponseOk() {
         return ret == 0;
     }
-
-
-
-
 
 }

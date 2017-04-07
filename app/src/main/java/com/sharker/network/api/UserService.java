@@ -1,5 +1,13 @@
 package com.sharker.network.api;
 
+import com.sharker.models.FirstHand;
+import com.sharker.models.RequestData;
+import com.sharker.models.ResponseData;
+
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import rx.Observable;
+
 /**
  * 1. 类的用途
  * 2. @author：liqingyi
@@ -8,4 +16,6 @@ package com.sharker.network.api;
 
 public interface UserService {
 
+    @POST("/app/v1/first_hand")
+    Observable<ResponseData<FirstHand>> firstHand(@Body RequestData requestData);
 }

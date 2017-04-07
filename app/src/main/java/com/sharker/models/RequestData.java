@@ -3,11 +3,11 @@ package com.sharker.models;
 import android.os.Build;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.EncryptUtils;
 import com.sharker.App;
 import com.sharker.network.ApiConstants;
+import com.sharker.utils.Md5;
 
-import java.util.Calendar;
+import org.xutils.http.RequestParams;
 
 /**
  * 1. 类的用途
@@ -15,25 +15,35 @@ import java.util.Calendar;
  * 3. @date：2017/4/7 10:01
  */
 
-public abstract class RequestData {
+public class RequestData {
     public String type;
     public String dev_id;
     public String ver_code;
     public String tick;
     public String sign;
 
-    private RequestData() {
+    public RequestData() {
         this.type = ApiConstants.COMMON_DEV_TYPE;
         this.dev_id = Build.FINGERPRINT;
         this.ver_code = String.valueOf(AppUtils.getAppVersionCode(App.getInstance()));
-        this.tick = String.valueOf(Calendar.getInstance().getTime().getTime());
-//        this.tick = "" + System.currentTimeMillis();
-        this.sign = generateSign();//相关计算规则生成
-
+        this.tick = String.valueOf(System.currentTimeMillis());
     }
 
-    public String generateSign() {
-        return EncryptUtils.encryptMD5ToString("");
+    public String generateSign(RequestParams params) {
+        StringBuilder builder = new StringBuilder();
+        if (FirstHand.isHand()) {
+            builder.append(FirstHand.getInstance().private_key)
+                    .append(FirstHand.getInstance().app_id);
+        } else {
+            builder.append(ApiConstants.COMMON_PUBLIC_KEY)
+                    .append(this.type);
+        }
+
+        builder.append(this.dev_id)
+                .append(this.ver_code)
+                .append(this.tick);
+
+        return Md5.toMd5(builder.toString()).toUpperCase();
     }
 
 }

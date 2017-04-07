@@ -7,11 +7,12 @@ package com.sharker.network;
  */
 
 public class ApiConstants {
-    public static final String USER_BASE_URL = "http://space.bilibili.com/";
+
+    public static final String USER_BASE_URL = "https://pretty.f8cam.com:17211";
+    public static final String USER_BASE_PATH = "/app/v1/";
     public static final String COMMON_UA_STR = "Sharker Android Client/1.0";
     public static final String COMMON_DEV_TYPE = "ANDROID";
     public static final String COMMON_PUBLIC_KEY = "312045ED9D036BEED16E96F3878E222ED7E58AC9";
-
 
 }
 
