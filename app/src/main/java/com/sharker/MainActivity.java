@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.sharker.models.Banner;
+import com.sharker.models.BaseData;
 import com.sharker.models.FirstHand;
 import com.sharker.network.SharkerParams;
 
 import org.xutils.common.Callback;
 import org.xutils.x;
-
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -18,9 +17,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (FirstHand.isHost()){
+        FirstHand.getInstance();
+        if (FirstHand.isHost()) {
             listBanner();
-        }else {
+        } else {
             firstHand();
         }
     }
@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<FirstHand>() {
             @Override
             public void onSuccess(FirstHand result) {
-                Log.d(getLocalClassName(),result.toString());
+                Log.d(getLocalClassName(), result.toString());
                 FirstHand.saveHost(result);
             }
 
@@ -77,13 +77,13 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    void listBanner(){
+    void listBanner() {
         SharkerParams params = new SharkerParams("list_banner");
-        x.http().post(params, new Callback.CommonCallback<List<Banner>>() {
+        x.http().post(params, new Callback.CommonCallback<BaseData>() {
             @Override
-            public void onSuccess(List<Banner> result) {
-                for (Banner b:result) {
-                    Log.d(getLocalClassName(),b.toString());
+            public void onSuccess(BaseData result) {
+                for (Banner b : result.banner) {
+                    Log.d(getLocalClassName(), b.toString());
                 }
             }
 

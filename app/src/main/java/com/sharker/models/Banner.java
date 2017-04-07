@@ -9,7 +9,6 @@ import org.xutils.http.annotation.HttpResponse;
  * 2. @author：liqingyi
  * 3. @date：2017/4/7 16:29
  */
-@HttpResponse(parser = SharkerResponseParser.class)
 public class Banner {
     public String image;
     public String click;
