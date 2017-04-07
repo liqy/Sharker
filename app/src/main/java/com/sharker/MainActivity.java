@@ -20,6 +20,8 @@ public class MainActivity extends BaseActivity {
         FirstHand.getInstance();
         if (FirstHand.isHost()) {
             listBanner();
+            listTry();
+
         } else {
             firstHand();
         }
@@ -73,6 +75,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFinished() {
                 listBanner();
+                listTry();
             }
         });
     }
@@ -103,5 +106,31 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
+    void listTry(){
+        SharkerParams params = new SharkerParams("list_try");
+        x.http().post(params, new Callback.CommonCallback<BaseData>() {
+            @Override
+            public void onSuccess(BaseData result) {
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
 
 }
