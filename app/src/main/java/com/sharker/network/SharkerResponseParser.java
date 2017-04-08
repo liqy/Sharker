@@ -1,10 +1,8 @@
 package com.sharker.network;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
-import com.sharker.models.ResponseData;
+import com.sharker.models.data.ResponseData;
 
 import org.xutils.http.app.ResponseParser;
 import org.xutils.http.request.UriRequest;

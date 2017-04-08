@@ -1,8 +1,8 @@
 package com.sharker.network.api;
 
 import com.sharker.models.FirstHand;
-import com.sharker.models.RequestData;
-import com.sharker.models.ResponseData;
+import com.sharker.models.data.RequestData;
+import com.sharker.models.data.ResponseData;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;

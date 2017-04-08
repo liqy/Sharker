@@ -1,4 +1,4 @@
-package com.sharker.models;
+package com.sharker.models.data;
 
 import android.os.Build;
 

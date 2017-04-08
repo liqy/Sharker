@@ -1,4 +1,4 @@
-package com.sharker;
+package com.sharker.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 

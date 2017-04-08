@@ -1,11 +1,12 @@
-package com.sharker;
+package com.sharker.ui.activity;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 
-import com.sharker.models.Banner;
-import com.sharker.models.BaseData;
+import com.sharker.R;
 import com.sharker.models.FirstHand;
+import com.sharker.models.data.AdBanner;
+import com.sharker.models.data.CourseData;
 import com.sharker.network.SharkerParams;
 
 import org.xutils.common.Callback;
@@ -20,7 +21,9 @@ public class MainActivity extends BaseActivity {
         FirstHand.getInstance();
         if (FirstHand.isHost()) {
             listBanner();
-            listTry();
+            listTry("list_try", "", 0);
+            listCourse("list_course", "", 0, 1);
+            listTopic("list_topic", 0);
         } else {
             firstHand();
         }
@@ -73,16 +76,18 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFinished() {
                 listBanner();
-                listTry();
+                listTry("list_try", "", 0);
+                listCourse("list_course", "", 0, 1);
+                listTopic("list_topic", 0);
             }
         });
     }
 
     void listBanner() {
         SharkerParams params = new SharkerParams("list_banner");
-        x.http().post(params, new Callback.CommonCallback<BaseData>() {
+        x.http().post(params, new Callback.CommonCallback<AdBanner>() {
             @Override
-            public void onSuccess(BaseData result) {
+            public void onSuccess(AdBanner result) {
 
             }
 
@@ -103,14 +108,32 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    void listTry(){
-        SharkerParams params = new SharkerParams("list_try");
-//        params.addBodyParameter("category","001");
-        params.addBodyParameter("page_size","20");
-        params.addBodyParameter("page_index","0");
-        x.http().post(params, new Callback.CommonCallback<BaseData>() {
+    void listTry(String uri, String category, int page_index) {
+        listCourse(uri, category, page_index, 0);
+    }
+
+    void listTopic(String uri, int page_index) {
+        listCourse(uri, "", page_index, 0);
+    }
+
+    public void listCourse(String uri, String category, int page_index, int sort_by) {
+        SharkerParams params = new SharkerParams(uri);
+
+        if (!TextUtils.isEmpty(category)) {
+            params.addBodyParameter("category", category);
+        }
+
+        params.addBodyParameter("page_size", "25");
+
+        params.addBodyParameter("page_index", "" + page_index);
+
+        if (sort_by != 0) {
+            params.addBodyParameter("sort_by", "" + sort_by);
+        }
+
+        x.http().post(params, new Callback.CommonCallback<CourseData>() {
             @Override
-            public void onSuccess(BaseData result) {
+            public void onSuccess(CourseData result) {
 
             }
 
@@ -130,6 +153,5 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
 
 }
