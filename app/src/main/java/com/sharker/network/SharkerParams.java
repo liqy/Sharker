@@ -22,4 +22,5 @@ public class SharkerParams extends RequestParams{
     public SharkerParams(String uri) {
         super(uri);
     }
+
 }

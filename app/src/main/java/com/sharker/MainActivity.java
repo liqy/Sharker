@@ -21,7 +21,6 @@ public class MainActivity extends BaseActivity {
         if (FirstHand.isHost()) {
             listBanner();
             listTry();
-
         } else {
             firstHand();
         }
@@ -109,6 +108,8 @@ public class MainActivity extends BaseActivity {
 
     void listTry(){
         SharkerParams params = new SharkerParams("list_try");
+        params.addBodyParameter("page_size","20");
+        params.addBodyParameter("page_index","0");
         x.http().post(params, new Callback.CommonCallback<BaseData>() {
             @Override
             public void onSuccess(BaseData result) {

@@ -1,5 +1,7 @@
 package com.sharker.network;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.sharker.models.ResponseData;
 
@@ -23,6 +25,7 @@ public class SharkerResponseParser implements ResponseParser {
 
     @Override
     public Object parse(Type resultType, Class<?> resultClass, String result) throws Throwable {
+            Log.d("SharkerResponseParser",result);
             ResponseData data = fromJson(result, resultClass);
             if (data.isResponseOk()) {
                 return data.data;
