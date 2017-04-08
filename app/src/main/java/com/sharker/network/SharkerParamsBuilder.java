@@ -1,6 +1,7 @@
 package com.sharker.network;
 
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.sharker.App;
@@ -53,6 +54,8 @@ public class SharkerParamsBuilder implements ParamsBuilder {
         params.addParameter("dev_id", Build.FINGERPRINT);
         params.addParameter("ver_code", String.valueOf(AppUtils.getAppVersionCode(App.getInstance())));
         params.addParameter("tick", String.valueOf(System.currentTimeMillis()));
+        //TODO 实现登录之后再添加
+//        params.addParameter("session", "");
     }
 
     @Override
@@ -65,21 +68,28 @@ public class SharkerParamsBuilder implements ParamsBuilder {
             builder.append(ApiConstants.COMMON_PUBLIC_KEY);
         }
         int size = list.size();
-        if (size > 4) {
-            List<KeyValue> subList = list.subList(0, size - 4);
-            List<KeyValue> commonList = list.subList(size - 4, size);
-            for (KeyValue kv : commonList) {
-                builder.append(kv.getValueStr());
-            }
-            for (KeyValue kv : subList) {
-                builder.append(kv.getValueStr());
+        //TODO 登录之后的逻辑需要重新处理
+        String session = "";
+        if (TextUtils.isEmpty(session)) {
+            if (size > 4) {
+                List<KeyValue> subList = list.subList(0, size - 4);
+                List<KeyValue> commonList = list.subList(size - 4, size);
+                for (KeyValue kv : commonList) {
+                    builder.append(kv.getValueStr());
+                }
+                for (KeyValue kv : subList) {
+                    builder.append(kv.getValueStr());
+                }
+            } else {
+                for (KeyValue kv : list) {
+                    builder.append(kv.getValueStr());
+                }
             }
         } else {
-            for (KeyValue kv : list) {
-                builder.append(kv.getValueStr());
-            }
+            //TODO 登录之后的签名处理
         }
 
+        //对参数的顺序有要求
         params.addParameter("sign", Md5.toMd5(builder.toString()).toUpperCase());
     }
 

@@ -3,6 +3,8 @@ package com.sharker;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.Logger;
 
 import org.xutils.x;
 
@@ -30,5 +32,14 @@ public class App extends Application {
 
         x.Ext.init(this);
         x.Ext.setDebug(BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
+
+        Logger
+                .init("sharker")                 // default PRETTYLOGGER or use just init()
+                .methodCount(3)                 // default 2
+                .hideThreadInfo()               // default shown
+                .logLevel(LogLevel.FULL)        // default LogLevel.FULL
+                .methodOffset(2)                // default 0
+        ;
+
     }
 }

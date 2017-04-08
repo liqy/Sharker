@@ -57,7 +57,6 @@ public class MainActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<FirstHand>() {
             @Override
             public void onSuccess(FirstHand result) {
-                Log.d(getLocalClassName(), result.toString());
                 FirstHand.saveHost(result);
             }
 
@@ -84,9 +83,7 @@ public class MainActivity extends BaseActivity {
         x.http().post(params, new Callback.CommonCallback<BaseData>() {
             @Override
             public void onSuccess(BaseData result) {
-                for (Banner b : result.banner) {
-                    Log.d(getLocalClassName(), b.toString());
-                }
+
             }
 
             @Override
@@ -108,6 +105,7 @@ public class MainActivity extends BaseActivity {
 
     void listTry(){
         SharkerParams params = new SharkerParams("list_try");
+//        params.addBodyParameter("category","001");
         params.addBodyParameter("page_size","20");
         params.addBodyParameter("page_index","0");
         x.http().post(params, new Callback.CommonCallback<BaseData>() {

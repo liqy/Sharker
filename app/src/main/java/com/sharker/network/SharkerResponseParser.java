@@ -3,6 +3,7 @@ package com.sharker.network;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 import com.sharker.models.ResponseData;
 
 import org.xutils.http.app.ResponseParser;
@@ -25,7 +26,7 @@ public class SharkerResponseParser implements ResponseParser {
 
     @Override
     public Object parse(Type resultType, Class<?> resultClass, String result) throws Throwable {
-            Log.d("SharkerResponseParser",result);
+            Logger.json(result);
             ResponseData data = fromJson(result, resultClass);
             if (data.isResponseOk()) {
                 return data.data;
@@ -35,6 +36,7 @@ public class SharkerResponseParser implements ResponseParser {
     }
 
     public ResponseData fromJson(String json, Class clazz) {
+        //TODO 做成一个单例 Gson
         Gson gson = new Gson();
         Type objectType = type(ResponseData.class, clazz);
         return gson.fromJson(json, objectType);
