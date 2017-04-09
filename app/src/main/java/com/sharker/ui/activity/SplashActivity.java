@@ -6,10 +6,17 @@ import android.os.Bundle;
 
 import com.sharker.R;
 import com.sharker.models.FirstHand;
+import com.sharker.models.data.ResponseData;
+import com.sharker.network.RetrofitHelper;
 import com.sharker.network.SharkerParams;
 
 import org.xutils.common.Callback;
 import org.xutils.x;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SplashActivity extends BaseActivity {
 
@@ -32,6 +39,7 @@ public class SplashActivity extends BaseActivity {
         } else {
             firstHand();
         }
+
     }
 
     public void firstHand() {

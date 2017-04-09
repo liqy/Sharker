@@ -1,12 +1,22 @@
 package com.sharker.network;
 
+import android.os.Build;
+import android.text.TextUtils;
+
+import com.blankj.utilcode.util.AppUtils;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.sharker.App;
+import com.sharker.models.FirstHand;
 import com.sharker.network.api.UserService;
 import com.sharker.utils.CommonUtil;
+import com.sharker.utils.Md5;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -38,11 +48,92 @@ public class RetrofitHelper {
         return createApi(UserService.class, ApiConstants.USER_BASE_URL);
     }
 
+    public static Map<String, String> createParams() {
+        Map<String, String> params = new LinkedHashMap<>();
+        return params;
+    }
+
+    /**
+     * 获取请求参数
+     * @param params
+     * @return
+     */
+    public static Map<String, String> getParams(Map<String, String> params) {
+        return getParams(params, "");
+    }
+
+    /**
+     * 当使用登录接口时请使用此接口
+     *
+     * @param params
+     * @param url
+     * @return
+     */
+    public static Map<String, String> getParams(Map<String, String> params, String url) {
+        if (FirstHand.isHand()) {
+            params.put("app_id", FirstHand.getInstance().app_id);
+        } else {
+            params.put("type", ApiConstants.COMMON_DEV_TYPE);
+        }
+        params.put("dev_id", Build.FINGERPRINT);
+        params.put("ver_code", String.valueOf(AppUtils.getAppVersionCode(App.getInstance())));
+        params.put("tick", String.valueOf(System.currentTimeMillis()));
+        buildSign(params, url);
+        return params;
+    }
+
+    public static Map<String, String> buildSign(Map<String, String> params, String url) {
+        List<String> list = new ArrayList<>(params.values());
+
+        StringBuilder builder = new StringBuilder();
+        if (FirstHand.isHand()) {
+            builder.append(FirstHand.getInstance().private_key);
+        } else {
+            builder.append(ApiConstants.COMMON_PUBLIC_KEY);
+        }
+
+        int size = list.size();
+
+        if (url.contains("user_login")) {
+            String number = params.get("number");
+            builder.append(FirstHand.getInstance().app_id).append(number);
+            List<String> loginList = list.subList(2, size);
+            for (String kv : loginList) {
+                builder.append(kv);
+            }
+        } else {
+            //TODO 登录之后的逻辑需要重新处理
+            String session = "";
+            if (TextUtils.isEmpty(session)) {
+                if (size > 4) {
+                    List<String> subList = list.subList(0, size - 4);
+                    List<String> commonList = list.subList(size - 4, size);
+                    for (String kv : commonList) {
+                        builder.append(kv);
+                    }
+                    for (String kv : subList) {
+                        builder.append(kv);
+                    }
+                } else {
+                    for (String kv : list) {
+                        builder.append(kv);
+                    }
+                }
+            } else {
+                //TODO 登录之后的签名处理
+            }
+        }
+
+        //对参数的顺序有要求
+        params.put("sign", Md5.toMd5(builder.toString()).toUpperCase());
+
+        return params;
+    }
+
     /**
      * 根据传入的baseUrl，和api创建retrofit
      */
     private static <T> T createApi(Class<T> clazz, String baseUrl) {
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(mOkHttpClient)
@@ -72,6 +163,7 @@ public class RetrofitHelper {
                     mOkHttpClient = new OkHttpClient.Builder()
                             .cache(cache)
                             .addInterceptor(interceptor)
+                            .addInterceptor(new HostSelectionInterceptor())
                             .addNetworkInterceptor(new CacheInterceptor())
                             .addNetworkInterceptor(new StethoInterceptor())
                             .retryOnConnectionFailure(true)
@@ -102,6 +194,22 @@ public class RetrofitHelper {
             return chain.proceed(requestWithUserAgent);
         }
     }
+
+    private static class HostSelectionInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            if (FirstHand.isHost()) {
+                String host = FirstHand.getInstance().url_host;
+                request = request.newBuilder()
+                        .url(host + request.url().url().getPath())
+                        .build();
+            }
+            return chain.proceed(request);
+        }
+    }
+
 
     /**
      * 为okhttp添加缓存，这里是考虑到服务器不支持缓存时，从而让okhttp支持缓存
