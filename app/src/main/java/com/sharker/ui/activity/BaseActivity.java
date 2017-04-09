@@ -1,5 +1,6 @@
 package com.sharker.ui.activity;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -8,5 +9,6 @@ import android.support.v7.app.AppCompatActivity;
  * 3. @date：2017/4/6 21:57
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
+
 }

@@ -1,5 +1,7 @@
 package com.sharker.ui.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.sharker.R;
@@ -11,14 +13,22 @@ import org.xutils.x;
 
 public class SplashActivity extends BaseActivity {
 
+    public static void open(Activity activity) {
+        Intent intent=new Intent(activity,SplashActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         FirstHand.getInstance();
         if (FirstHand.isHost()) {
-            MainActivity.open(this);
+//            MainActivity.open(this);
 //            SignUpActivity.open(this);
+//            DetailCourseActivity.open(this);
+            DetailTopicActivity.open(this);
         } else {
             firstHand();
         }
