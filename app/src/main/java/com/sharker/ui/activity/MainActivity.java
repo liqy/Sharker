@@ -3,12 +3,13 @@ package com.sharker.ui.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 
 import com.sharker.R;
+import com.sharker.lazyviewpager.LazyFragmentPagerAdapter;
 import com.sharker.models.FirstHand;
 import com.sharker.models.data.AdBanner;
 import com.sharker.models.data.CourseData;
@@ -55,9 +56,9 @@ public class MainActivity extends BaseActivity {
                 .build();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+        viewPager.setAdapter(new  LazyFragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
-            public Fragment getItem(int position) {
+            protected Fragment getItem(ViewGroup container, int position) {
                 return CourseFragment.newInstance("","");
             }
 
@@ -68,9 +69,6 @@ public class MainActivity extends BaseActivity {
         });
         navigationController.setupWithViewPager(viewPager);
     }
-
-
-
 
     //创建一个Item
     private BaseTabItem newItem(int drawable, int checkedDrawable, String text){
