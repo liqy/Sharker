@@ -22,7 +22,7 @@
             android:value="GlideModule" />
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,10 @@
         <activity
             android:name=".ui.activity.DetailTopicActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.SplashActivity"></activity>
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.sharker.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -72,7 +73,9 @@ public class MainActivity extends BaseActivity {
         return normalItemView;
     }
 
-
-
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        //TODO 处理传入参数
+    }
 }

@@ -1,6 +1,6 @@
 package com.sharker.ui.activity;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.sharker.R;
@@ -10,13 +10,16 @@ import com.sharker.network.SharkerParams;
 import org.xutils.common.Callback;
 import org.xutils.x;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         FirstHand.getInstance();
+        if (!FirstHand.isHost()){
+            firstHand();
+        }
     }
 
     public void firstHand() {
@@ -25,21 +28,22 @@ public class SplashActivity extends Activity {
             @Override
             public void onSuccess(FirstHand result) {
                 FirstHand.save(result);
+                getHost();
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                //TODO 处理网络错误
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-
+                //TODO 处理网络错误
             }
 
             @Override
             public void onFinished() {
-                getHost();
+
             }
         });
 
@@ -51,16 +55,18 @@ public class SplashActivity extends Activity {
             @Override
             public void onSuccess(FirstHand result) {
                 FirstHand.saveHost(result);
+                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                finish();
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                //TODO 处理网络错误
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-
+                //TODO 处理网络错误
             }
 
             @Override
