@@ -1,5 +1,6 @@
 package com.sharker.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +21,12 @@ import me.majiajie.pagerbottomtabstrip.PageBottomTabLayout;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 
 public class MainActivity extends BaseActivity {
+
+    public static void open(Activity activity){
+        Intent intent=new Intent(activity,MainActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

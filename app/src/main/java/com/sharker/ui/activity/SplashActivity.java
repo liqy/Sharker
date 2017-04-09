@@ -1,6 +1,5 @@
 package com.sharker.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.sharker.R;
@@ -17,7 +16,10 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         FirstHand.getInstance();
-        if (!FirstHand.isHost()){
+        if (FirstHand.isHost()) {
+//            MainActivity.open(this);
+            SignUpActivity.open(this);
+        } else {
             firstHand();
         }
     }
@@ -55,8 +57,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onSuccess(FirstHand result) {
                 FirstHand.saveHost(result);
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                finish();
+                MainActivity.open(SplashActivity.this);
             }
 
             @Override

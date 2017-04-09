@@ -67,26 +67,37 @@ public class SharkerParamsBuilder implements ParamsBuilder {
         } else {
             builder.append(ApiConstants.COMMON_PUBLIC_KEY);
         }
+
         int size = list.size();
-        //TODO 登录之后的逻辑需要重新处理
-        String session = "";
-        if (TextUtils.isEmpty(session)) {
-            if (size > 4) {
-                List<KeyValue> subList = list.subList(0, size - 4);
-                List<KeyValue> commonList = list.subList(size - 4, size);
-                for (KeyValue kv : commonList) {
-                    builder.append(kv.getValueStr());
-                }
-                for (KeyValue kv : subList) {
-                    builder.append(kv.getValueStr());
-                }
-            } else {
-                for (KeyValue kv : list) {
-                    builder.append(kv.getValueStr());
-                }
+
+        if (params.getUri().contains("user_login")) {
+            String number = params.getStringParameter("number");
+            builder.append(FirstHand.getInstance().app_id).append(number);
+            List<KeyValue> loginList = list.subList(2, size);
+            for (KeyValue kv : loginList) {
+                builder.append(kv.getValueStr());
             }
         } else {
-            //TODO 登录之后的签名处理
+            //TODO 登录之后的逻辑需要重新处理
+            String session = "";
+            if (TextUtils.isEmpty(session)) {
+                if (size > 4) {
+                    List<KeyValue> subList = list.subList(0, size - 4);
+                    List<KeyValue> commonList = list.subList(size - 4, size);
+                    for (KeyValue kv : commonList) {
+                        builder.append(kv.getValueStr());
+                    }
+                    for (KeyValue kv : subList) {
+                        builder.append(kv.getValueStr());
+                    }
+                } else {
+                    for (KeyValue kv : list) {
+                        builder.append(kv.getValueStr());
+                    }
+                }
+            } else {
+                //TODO 登录之后的签名处理
+            }
         }
 
         //对参数的顺序有要求
