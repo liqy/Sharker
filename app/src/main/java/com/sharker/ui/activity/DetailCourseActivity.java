@@ -10,6 +10,9 @@ import com.sharker.network.SharkerParams;
 import org.xutils.common.Callback;
 import org.xutils.x;
 
+/**
+ * 课程详情
+ */
 public class DetailCourseActivity extends Activity {
 
     @Override

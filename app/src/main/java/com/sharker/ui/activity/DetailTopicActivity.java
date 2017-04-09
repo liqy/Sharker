@@ -10,6 +10,9 @@ import com.sharker.network.SharkerParams;
 import org.xutils.common.Callback;
 import org.xutils.x;
 
+/**
+ * 专辑详情
+ */
 public class DetailTopicActivity extends AppCompatActivity {
 
     @Override

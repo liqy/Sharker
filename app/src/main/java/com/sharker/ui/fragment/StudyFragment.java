@@ -72,6 +72,9 @@ public class StudyFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 轮播图
+     */
     void listBanner() {
         SharkerParams params = new SharkerParams("list_banner");
         x.http().post(params, new Callback.CommonCallback<AdBanner>() {
@@ -97,14 +100,32 @@ public class StudyFragment extends BaseFragment {
         });
     }
 
+    /**
+     * 试听课程列表
+     * @param uri
+     * @param category
+     * @param page_index
+     */
     void listTry(String uri, String category, int page_index) {
         listCourse(uri, category, page_index, 0);
     }
 
+    /**
+     * 精品专辑列表
+     * @param uri
+     * @param page_index
+     */
     void listTopic(String uri, int page_index) {
         listCourse(uri, "", page_index, 0);
     }
 
+    /**
+     * 精品课程列表
+     * @param uri
+     * @param category
+     * @param page_index
+     * @param sort_by
+     */
     public void listCourse(String uri, String category, int page_index, int sort_by) {
         SharkerParams params = new SharkerParams(uri);
 
