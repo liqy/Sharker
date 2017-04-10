@@ -54,8 +54,12 @@ public class SharkerParamsBuilder implements ParamsBuilder {
         params.addParameter("dev_id", Build.FINGERPRINT);
         params.addParameter("ver_code", String.valueOf(AppUtils.getAppVersionCode(App.getInstance())));
         params.addParameter("tick", String.valueOf(System.currentTimeMillis()));
+
         //TODO 实现登录之后再添加
-//        params.addParameter("session", "");
+        if (FirstHand.isSession() && !params.getUri().contains("list_banner")) {
+            params.addParameter("session", FirstHand.getInstance().session);
+        }
+
     }
 
     @Override
@@ -77,13 +81,18 @@ public class SharkerParamsBuilder implements ParamsBuilder {
             for (KeyValue kv : loginList) {
                 builder.append(kv.getValueStr());
             }
+        } else if (params.getUri().contains("list_banner")) {
+            for (KeyValue kv : list) {
+                builder.append(kv.getValueStr());
+            }
         } else {
             //TODO 登录之后的逻辑需要重新处理
-            String session = "";
+            String session = FirstHand.getInstance().session;
             if (TextUtils.isEmpty(session)) {
                 if (size > 4) {
                     List<KeyValue> subList = list.subList(0, size - 4);
                     List<KeyValue> commonList = list.subList(size - 4, size);
+
                     for (KeyValue kv : commonList) {
                         builder.append(kv.getValueStr());
                     }
@@ -97,6 +106,14 @@ public class SharkerParamsBuilder implements ParamsBuilder {
                 }
             } else {
                 //TODO 登录之后的签名处理
+                List<KeyValue> subList = list.subList(0, size - 5);
+                List<KeyValue> commonList = list.subList(size - 5, size);
+                for (KeyValue kv : commonList) {
+                    builder.append(kv.getValueStr());
+                }
+                for (KeyValue kv : subList) {
+                    builder.append(kv.getValueStr());
+                }
             }
         }
 

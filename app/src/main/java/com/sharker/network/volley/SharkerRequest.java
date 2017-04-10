@@ -104,7 +104,7 @@ public class SharkerRequest<T> extends Request<T> {
             }
         } else {
             //TODO 登录之后的逻辑需要重新处理
-            String session = "";
+            String session = FirstHand.getInstance().session;
             if (TextUtils.isEmpty(session)) {
                 if (size > 4) {
                     List<String> subList = list.subList(0, size - 4);

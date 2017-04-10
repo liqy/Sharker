@@ -22,6 +22,9 @@ public class FirstHand {
     public String private_key;
     public String url_host;
 
+    public String session;
+    public String uname;
+
     public static void save(FirstHand hand) {
         singleton = hand;
         SharedPreferences preferences = App.getInstance().getSharedPreferences("FirstHand", Context.MODE_PRIVATE);
@@ -29,6 +32,20 @@ public class FirstHand {
         editor.putString("app_id", hand.app_id);
         editor.putString("private_key", hand.private_key);
         editor.apply();
+    }
+
+    public static void saveSession(AuthUser authUser) {
+
+        singleton.uname = authUser.uname;
+        singleton.session = authUser.session;
+
+        SharedPreferences preferences = App.getInstance().getSharedPreferences("FirstHand", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("uname", authUser.uname);
+        editor.putString("session", authUser.session);
+
+        editor.apply();
+
     }
 
     public static void saveHost(FirstHand hand) {
@@ -62,10 +79,16 @@ public class FirstHand {
         singleton.app_id = preferences.getString("app_id", "");
         singleton.private_key = preferences.getString("private_key", "");
         singleton.url_host = preferences.getString("host", "");
+        singleton.session = preferences.getString("session", "");
+        singleton.uname = preferences.getString("uname", "");
     }
 
     public static boolean isHost() {
         return singleton != null && !TextUtils.isEmpty(singleton.url_host);
+    }
+
+    public static boolean isSession(){
+        return singleton!=null&&!TextUtils.isEmpty(singleton.session);
     }
 
     public static boolean isHand() {
@@ -80,6 +103,8 @@ public class FirstHand {
                 "app_id='" + app_id + '\'' +
                 ", private_key='" + private_key + '\'' +
                 ", url_host='" + url_host + '\'' +
+                ", session='" + session + '\'' +
+                ", uname='" + uname + '\'' +
                 '}';
     }
 }

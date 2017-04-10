@@ -31,6 +31,13 @@ public class SignUpActivity extends BaseActivity {
         activity.finish();
     }
 
+    public static void open(Activity activity, int from) {
+        Intent intent = new Intent(activity, SignUpActivity.class);
+        intent.putExtra("from", from);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
     @BindView(R.id.btn_login)
     public Button btn_login;
 
@@ -45,12 +52,15 @@ public class SignUpActivity extends BaseActivity {
 
     AuthUser authUser;
 
+    int from = AuthUser.FROM_MAIN_ACTIVITY;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
 
+        int from = getIntent().getIntExtra("from", AuthUser.FROM_MAIN_ACTIVITY);
     }
 
     @OnClick(R.id.btn_rand)
@@ -106,9 +116,14 @@ public class SignUpActivity extends BaseActivity {
         SharkerParams params = new SharkerParams("user_check_rand");
         params.addBodyParameter("session", session);
         params.addBodyParameter("rand", rand);
-        x.http().post(params, new Callback.CommonCallback<FirstHand>() {
+        x.http().post(params, new Callback.CommonCallback<AuthUser>() {
             @Override
-            public void onSuccess(FirstHand result) {
+            public void onSuccess(AuthUser result) {
+                authUser = result;
+                FirstHand.saveSession(result);
+                if (from == AuthUser.FROM_MAIN_ACTIVITY) {
+                    MainActivity.open(SignUpActivity.this);
+                }
 
             }
 
