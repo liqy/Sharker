@@ -81,6 +81,12 @@ public class SharkerRequest<T> extends Request<T> {
         params.put("dev_id", Build.FINGERPRINT);
         params.put("ver_code", String.valueOf(AppUtils.getAppVersionCode(App.getInstance())));
         params.put("tick", String.valueOf(System.currentTimeMillis()));
+
+        //TODO 实现登录之后再添加
+        if (FirstHand.isSession() && !getUrl().contains("list_banner")) {
+            params.put("session", FirstHand.getInstance().session);
+        }
+
         buildSign(params, getUrl());
         return params;
     }
@@ -105,6 +111,10 @@ public class SharkerRequest<T> extends Request<T> {
             for (String kv : loginList) {
                 builder.append(kv);
             }
+        } else if (url.contains("list_banner")) {
+            for (String kv : list) {
+                builder.append(kv);
+            }
         } else {
             //TODO 登录之后的逻辑需要重新处理
             String session = FirstHand.getInstance().session;
@@ -125,6 +135,14 @@ public class SharkerRequest<T> extends Request<T> {
                 }
             } else {
                 //TODO 登录之后的签名处理
+                List<String> subList = list.subList(0, size - 5);
+                List<String> commonList = list.subList(size - 5, size);
+                for (String kv : commonList) {
+                    builder.append(kv);
+                }
+                for (String kv : subList) {
+                    builder.append(kv);
+                }
             }
         }
 
