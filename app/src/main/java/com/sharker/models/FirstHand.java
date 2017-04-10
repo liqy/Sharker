@@ -48,6 +48,16 @@ public class FirstHand {
 
     }
 
+    public static void clearSession() {
+        singleton.session = "";
+        singleton.uname = "";
+        SharedPreferences preferences = App.getInstance().getSharedPreferences("FirstHand", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("uname", "");
+        editor.putString("session", "");
+        editor.apply();
+    }
+
     public static void saveHost(FirstHand hand) {
         singleton.url_host = hand.url_host;
         SharedPreferences preferences = App.getInstance().getSharedPreferences("FirstHand", Context.MODE_PRIVATE);
@@ -87,8 +97,8 @@ public class FirstHand {
         return singleton != null && !TextUtils.isEmpty(singleton.url_host);
     }
 
-    public static boolean isSession(){
-        return singleton!=null&&!TextUtils.isEmpty(singleton.session);
+    public static boolean isSession() {
+        return singleton != null && !TextUtils.isEmpty(singleton.session);
     }
 
     public static boolean isHand() {
