@@ -33,9 +33,9 @@ public class SplashActivity extends BaseActivity {
         FirstHand.getInstance();
         if (FirstHand.isHost()) {
 //            MainActivity.open(this);
-//            SignUpActivity.open(this);
+            SignUpActivity.open(this);
 //            DetailCourseActivity.open(this);
-            DetailTopicActivity.open(this);
+//            DetailTopicActivity.open(this);
         } else {
             firstHand();
         }

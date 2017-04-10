@@ -74,10 +74,10 @@ public class DetailTopicActivity extends BaseActivity implements Response.Listen
     void detailTopicVolley(String object_id) {
         Map<String, String> params = RetrofitHelper.createParams();
         params.put("object_id", object_id);
-        SharkerVolley.getInstance().
-                addToRequestQueue(new SharkerRequest<TopicDetail>(
+        SharkerRequest request=new SharkerRequest<TopicDetail>(
                 "detail_topic", TopicDetail.class, params, this, this
-        ));
+        );
+        SharkerVolley.getInstance().addToRequestQueue(request);
     }
 
     @Override

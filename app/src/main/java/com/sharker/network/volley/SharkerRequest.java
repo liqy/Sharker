@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +66,9 @@ public class SharkerRequest<T> extends Request<T> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return headers != null ? headers : super.getHeaders();
+        Map<String, String> headerMap = new HashMap<>(headers != null ? headers : super.getHeaders());
+        headerMap.put("User-Agent", "android-open-project-analysis/1.0");
+        return headerMap;
     }
 
     @Override
