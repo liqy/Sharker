@@ -71,4 +71,6 @@ dependencies {
 
     compile 'me.majiajie:pager-bottom-tab-strip:2.1.0'
 
+    compile 'com.android.volley:volley:1.0.0'
+
 }

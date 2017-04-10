@@ -45,6 +45,7 @@ public class DetailTopicActivity extends BaseActivity {
     void detailTopicRx(String object_id) {
         Map<String, String> map = RetrofitHelper.createParams();
         map.put("object_id", object_id);
+
         RetrofitHelper.getUserAPI().detailTopic(RetrofitHelper.getParams(map))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

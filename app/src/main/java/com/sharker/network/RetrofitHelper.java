@@ -94,6 +94,7 @@ public class RetrofitHelper {
 
         int size = list.size();
 
+        //TODO 登录特出处理
         if (url.contains("user_login")) {
             String number = params.get("number");
             builder.append(FirstHand.getInstance().app_id).append(number);
