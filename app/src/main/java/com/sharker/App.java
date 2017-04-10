@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.sharker.network.volley.SharkerVolley;
 
 import org.xutils.x;
 
@@ -40,6 +41,8 @@ public class App extends Application {
                 .logLevel(LogLevel.FULL)        // default LogLevel.FULL
                 .methodOffset(2)                // default 0
         ;
+
+        SharkerVolley.initVolley(this);
 
     }
 }

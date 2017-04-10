@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sharker.R;
 import com.sharker.models.TopicDetail;
 import com.sharker.models.data.ResponseData;
 import com.sharker.network.RetrofitHelper;
 import com.sharker.network.SharkerParams;
+import com.sharker.network.volley.SharkerRequest;
+import com.sharker.network.volley.SharkerVolley;
 
 import org.xutils.common.Callback;
 import org.xutils.x;
@@ -22,7 +26,7 @@ import rx.schedulers.Schedulers;
 /**
  * 专辑详情
  */
-public class DetailTopicActivity extends BaseActivity {
+public class DetailTopicActivity extends BaseActivity implements Response.Listener, Response.ErrorListener {
 
     public static void open(Activity activity) {
         Intent intent = new Intent(activity, DetailTopicActivity.class);
@@ -65,6 +69,25 @@ public class DetailTopicActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    void detailTopicVolley(String object_id) {
+        Map<String, String> params = RetrofitHelper.createParams();
+        params.put("object_id", object_id);
+        SharkerVolley.getInstance().
+                addToRequestQueue(new SharkerRequest<TopicDetail>(
+                "detail_topic", TopicDetail.class, params, this, this
+        ));
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+
+    }
+
+    @Override
+    public void onResponse(Object response) {
+
     }
 
     void detailTopic(String object_id) {
