@@ -32,8 +32,8 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         FirstHand.getInstance();
         if (FirstHand.isHost()) {
-//            MainActivity.open(this);
-            SignUpActivity.open(this);
+            MainActivity.open(this);
+//            SignUpActivity.open(this);
 //            DetailCourseActivity.open(this);
 //            DetailTopicActivity.open(this);
         } else {

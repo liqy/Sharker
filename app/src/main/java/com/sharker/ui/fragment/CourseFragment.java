@@ -2,12 +2,19 @@ package com.sharker.ui.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sharker.R;
+import com.sharker.models.data.CourseData;
+import com.sharker.network.SharkerParams;
+
+import org.xutils.common.Callback;
+import org.xutils.x;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +56,40 @@ public class CourseFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_course, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        myListCourse("list_my_course",0);
+    }
+
+    public void myListCourse(String uri, int page_index) {
+        SharkerParams params = new SharkerParams(uri);
+        params.addBodyParameter("page_size", "25");
+        params.addBodyParameter("page_index", "" + page_index);
+
+        x.http().post(params, new Callback.CommonCallback<CourseData>() {
+            @Override
+            public void onSuccess(CourseData result) {
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
 }

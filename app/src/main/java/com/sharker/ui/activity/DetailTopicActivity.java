@@ -38,7 +38,7 @@ public class DetailTopicActivity extends BaseActivity implements Response.Listen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_topic);
-        detailTopicVolley("300002");
+        detailTopic("300002");
     }
 
     /**
