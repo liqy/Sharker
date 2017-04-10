@@ -1,9 +1,5 @@
 package com.sharker.models;
 
-import com.sharker.network.SharkerResponseParser;
-
-import org.xutils.http.annotation.HttpResponse;
-
 /**
  * 1. 类的用途
  * 2. @author：liqingyi

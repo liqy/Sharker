@@ -49,7 +49,7 @@ public class SharkerRequest<T> extends Request<T> {
                           Map<String, String> headers,
                           Response.Listener<T> listener,
                           Response.ErrorListener errorListener) {
-        super(method, url, errorListener);
+        super(method, FirstHand.isHost() ? FirstHand.getInstance().url_host + ApiConstants.USER_BASE_PATH + url : ApiConstants.USER_BASE_URL + ApiConstants.USER_BASE_PATH + url, errorListener);
         this.clazz = clazz;
         this.headers = headers;
         this.listener = listener;
