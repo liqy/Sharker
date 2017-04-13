@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
  */
 
 public class SharkerResponseParser implements ResponseParser {
+
     @Override
     public void checkResponse(UriRequest request) throws Throwable {
 

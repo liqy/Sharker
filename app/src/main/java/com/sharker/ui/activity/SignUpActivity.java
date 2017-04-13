@@ -31,6 +31,11 @@ public class SignUpActivity extends BaseActivity {
         activity.finish();
     }
 
+    /**
+     *
+     * @param activity
+     * @param from
+     */
     public static void open(Activity activity, int from) {
         Intent intent = new Intent(activity, SignUpActivity.class);
         intent.putExtra("from", from);

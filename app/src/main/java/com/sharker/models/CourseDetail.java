@@ -25,5 +25,4 @@ public class CourseDetail {
     public int exam_score;
     public String service_tel;
     public String speaker_audio;
-
 }

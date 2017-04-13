@@ -17,6 +17,7 @@ import org.xutils.http.annotation.HttpRequest;
 public class SharkerParams extends RequestParams{
 
     public SharkerParams() {
+
     }
 
     public SharkerParams(String uri) {

@@ -22,7 +22,6 @@ import javax.net.ssl.SSLSocketFactory;
  * 2. @author：liqingyi
  * 3. @date：2017/4/7 13:32
  */
-
 public class SharkerParamsBuilder implements ParamsBuilder {
 
     @Override

@@ -1,7 +1,6 @@
 package com.sharker.models;
 
 import com.sharker.network.SharkerResponseParser;
-
 import org.xutils.http.annotation.HttpResponse;
 
 /**

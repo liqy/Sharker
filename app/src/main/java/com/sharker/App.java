@@ -7,6 +7,7 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.sharker.network.volley.SharkerVolley;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.x;
 
 /**
@@ -44,5 +45,6 @@ public class App extends Application {
 
         SharkerVolley.initVolley(this);
 
+//        EventBus eventBus = EventBus.builder().addIndex(new SharkerEventBusIndex()).build();
     }
 }

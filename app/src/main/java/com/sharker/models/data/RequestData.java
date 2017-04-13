@@ -13,11 +13,11 @@ import com.sharker.network.ApiConstants;
  */
 
 public class RequestData {
+
     public String type;
     public String dev_id;
     public String ver_code;
     public String tick;
-
     public String session;
 
     public RequestData() {

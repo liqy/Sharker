@@ -11,6 +11,12 @@ android {
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'com.sharker.SharkerEventBusIndex' ]
+            }
+        }
     }
     buildTypes {
         release {
@@ -72,5 +78,7 @@ dependencies {
     compile 'me.majiajie:pager-bottom-tab-strip:2.1.0'
 
     compile 'com.android.volley:volley:1.0.0'
-
+    compile 'org.greenrobot:eventbus:3.0.0'
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 }
+
