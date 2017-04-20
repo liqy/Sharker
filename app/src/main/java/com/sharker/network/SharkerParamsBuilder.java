@@ -52,7 +52,8 @@ public class SharkerParamsBuilder implements ParamsBuilder {
         }
         params.addParameter("dev_id", Build.FINGERPRINT);
         params.addParameter("ver_code", String.valueOf(AppUtils.getAppVersionCode(App.getInstance())));
-        params.addParameter("tick", String.valueOf(System.currentTimeMillis()));
+        int timestamp= (int) Math.floor(System.currentTimeMillis()/1000);
+        params.addParameter("tick", String.valueOf(timestamp));
 
         //TODO 实现登录之后再添加
         if (FirstHand.isSession() && !params.getUri().contains("list_banner")) {

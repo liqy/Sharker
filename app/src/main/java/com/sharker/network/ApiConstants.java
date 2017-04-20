@@ -9,6 +9,7 @@ package com.sharker.network;
 public class ApiConstants {
 
     public static final String USER_BASE_URL = "https://pretty.f8cam.com:17211";
+    public static final String USER_BASE_OKHTTPS_URL = "https://publicobject.com";
     public static final String USER_BASE_PATH = "/app/v1/";
     public static final String COMMON_UA_STR = "Sharker Android Client/1.0";
     public static final String COMMON_DEV_TYPE = "ANDROID";

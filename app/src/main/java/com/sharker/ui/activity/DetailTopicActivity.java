@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.orhanobut.logger.Logger;
 import com.sharker.R;
 import com.sharker.models.TopicDetail;
 import com.sharker.models.data.ResponseData;
@@ -38,7 +39,32 @@ public class DetailTopicActivity extends BaseActivity implements Response.Listen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_topic);
-        detailTopic("300002");
+//        detailTopicRx("300002");
+        helloWorld();
+    }
+
+    /**
+     * Android Https相关完全解析 当OkHttp遇到Https
+     */
+    void helloWorld(){
+        RetrofitHelper.getHelloAPI().helloworld().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        Logger.d(s);
+                    }
+                });
     }
 
     /**

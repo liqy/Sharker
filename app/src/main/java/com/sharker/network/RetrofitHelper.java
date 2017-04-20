@@ -7,17 +7,24 @@ import com.blankj.utilcode.util.AppUtils;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.sharker.App;
 import com.sharker.models.FirstHand;
+import com.sharker.network.api.HelloService;
 import com.sharker.network.api.UserService;
 import com.sharker.utils.CommonUtil;
+import com.sharker.utils.HttpsUtils;
 import com.sharker.utils.Md5;
+import com.sharker.utils.OkHttpsUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -26,6 +33,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.Buffer;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -38,6 +46,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitHelper {
 
+    private static String CER_12306 = "-----BEGIN CERTIFICATE-----\n" +
+            "MIICmjCCAgOgAwIBAgIIbyZr5/jKH6QwDQYJKoZIhvcNAQEFBQAwRzELMAkGA1UEBhMCQ04xKTAn\n" +
+            "BgNVBAoTIFNpbm9yYWlsIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MQ0wCwYDVQQDEwRTUkNBMB4X\n" +
+            "DTA5MDUyNTA2NTYwMFoXDTI5MDUyMDA2NTYwMFowRzELMAkGA1UEBhMCQ04xKTAnBgNVBAoTIFNp\n" +
+            "bm9yYWlsIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MQ0wCwYDVQQDEwRTUkNBMIGfMA0GCSqGSIb3\n" +
+            "DQEBAQUAA4GNADCBiQKBgQDMpbNeb34p0GvLkZ6t72/OOba4mX2K/eZRWFfnuk8e5jKDH+9BgCb2\n" +
+            "9bSotqPqTbxXWPxIOz8EjyUO3bfR5pQ8ovNTOlks2rS5BdMhoi4sUjCKi5ELiqtyww/XgY5iFqv6\n" +
+            "D4Pw9QvOUcdRVSbPWo1DwMmH75It6pk/rARIFHEjWwIDAQABo4GOMIGLMB8GA1UdIwQYMBaAFHle\n" +
+            "tne34lKDQ+3HUYhMY4UsAENYMAwGA1UdEwQFMAMBAf8wLgYDVR0fBCcwJTAjoCGgH4YdaHR0cDov\n" +
+            "LzE5Mi4xNjguOS4xNDkvY3JsMS5jcmwwCwYDVR0PBAQDAgH+MB0GA1UdDgQWBBR5XrZ3t+JSg0Pt\n" +
+            "x1GITGOFLABDWDANBgkqhkiG9w0BAQUFAAOBgQDGrAm2U/of1LbOnG2bnnQtgcVaBXiVJF8LKPaV\n" +
+            "23XQ96HU8xfgSZMJS6U00WHAI7zp0q208RSUft9wDq9ee///VOhzR6Tebg9QfyPSohkBrhXQenvQ\n" +
+            "og555S+C3eJAAVeNCTeMS3N/M5hzBRJAoffn3qoYdAO1Q8bTguOi+2849A==\n" +
+            "-----END CERTIFICATE-----";
+
     private static OkHttpClient mOkHttpClient;
 
     static {
@@ -48,6 +71,10 @@ public class RetrofitHelper {
         return createApi(UserService.class, ApiConstants.USER_BASE_URL);
     }
 
+    public static HelloService getHelloAPI() {
+        return createApi(HelloService.class, ApiConstants.USER_BASE_OKHTTPS_URL);
+    }
+
     public static Map<String, String> createParams() {
         Map<String, String> params = new LinkedHashMap<>();
         return params;
@@ -55,6 +82,7 @@ public class RetrofitHelper {
 
     /**
      * 获取请求参数
+     *
      * @param params
      * @return
      */
@@ -81,6 +109,7 @@ public class RetrofitHelper {
         buildSign(params, url);
         return params;
     }
+
 
     public static Map<String, String> buildSign(Map<String, String> params, String url) {
         List<String> list = new ArrayList<>(params.values());
@@ -154,6 +183,12 @@ public class RetrofitHelper {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+
+        InputStream[] inputStreams={new Buffer()
+                .writeUtf8(CER_12306)
+                .inputStream()};
+
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(inputStreams, null, null);
         if (mOkHttpClient == null) {
             synchronized (RetrofitHelper.class) {
                 if (mOkHttpClient == null) {
@@ -161,8 +196,18 @@ public class RetrofitHelper {
                     Cache cache = new Cache(new File(App.getInstance()
                             .getCacheDir(), "HttpCache"), 1024 * 1024 * 10);
 
+                    HttpsUtils.SSLParams params=HttpsUtils.getSslSocketFactory(null,null,null);
+
                     mOkHttpClient = new OkHttpClient.Builder()
                             .cache(cache)
+                            .sslSocketFactory(params.sSLSocketFactory,params.trustManager)
+                           .hostnameVerifier(new HostnameVerifier() {
+                               @Override
+                               public boolean verify(String hostname, SSLSession session) {
+                                   //TODO
+                                   return true;
+                               }
+                           })
                             .addInterceptor(interceptor)
                             .addInterceptor(new HostSelectionInterceptor())
                             .addNetworkInterceptor(new CacheInterceptor())
@@ -201,7 +246,8 @@ public class RetrofitHelper {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
-            if (FirstHand.isHost()) {
+            boolean isHttps = "publicobject.com".equals(request.url().host());
+            if (!isHttps && FirstHand.isHost()) {
                 String host = FirstHand.getInstance().url_host;
                 request = request.newBuilder()
                         .url(host + request.url().url().getPath())
@@ -210,7 +256,6 @@ public class RetrofitHelper {
             return chain.proceed(request);
         }
     }
-
 
     /**
      * 为okhttp添加缓存，这里是考虑到服务器不支持缓存时，从而让okhttp支持缓存
